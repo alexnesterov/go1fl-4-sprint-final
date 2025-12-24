@@ -21,7 +21,7 @@ const (
 func parseTraining(data string) (int, string, time.Duration, error) {
 	s := strings.Split(data, ",")
 	if len(s) != 3 {
-		return 0, "", 0, errors.New("ошибка парсинга строки")
+		return 0, "", 0, errors.New("error parsing string")
 	}
 
 	steps, err := strconv.Atoi(s[0])
@@ -29,7 +29,7 @@ func parseTraining(data string) (int, string, time.Duration, error) {
 		return 0, "", 0, err
 	}
 	if steps <= 0 {
-		return 0, "", 0, errors.New("количество шагов должно быть больше 0")
+		return 0, "", 0, errors.New("number of steps should be greater than 0")
 	}
 
 	activity := s[1]
@@ -39,7 +39,7 @@ func parseTraining(data string) (int, string, time.Duration, error) {
 		return 0, "", 0, err
 	}
 	if duration <= 0 {
-		return 0, "", 0, errors.New("продолжительность должна быть больше 0")
+		return 0, "", 0, errors.New("duration should be greater than 0")
 	}
 
 	return steps, activity, duration, nil
@@ -89,7 +89,7 @@ func TrainingInfo(data string, weight, height float64) (string, error) {
 	case "Бег":
 		calories, err = RunningSpentCalories(steps, weight, height, durarion)
 	default:
-		return "", errors.New("неизвестный тип тренировки")
+		return "", errors.New("unknown type of training")
 	}
 
 	if err != nil {
@@ -103,13 +103,13 @@ func TrainingInfo(data string, weight, height float64) (string, error) {
 
 func RunningSpentCalories(steps int, weight, height float64, duration time.Duration) (float64, error) {
 	if weight <= 0 {
-		return 0, errors.New("вес должен быть больше 0")
+		return 0, errors.New("weight should be greater than 0")
 	}
 	if steps <= 0 {
-		return 0, errors.New("количество шагов должно быть больше нуля")
+		return 0, errors.New("number of steps should be greater than 0")
 	}
 	if duration <= 0 {
-		return 0, errors.New("продолжительность должна быть больше 0")
+		return 0, errors.New("duration should be greater than 0")
 	}
 
 	meanSpeed := meanSpeed(steps, height, duration)
@@ -121,13 +121,13 @@ func RunningSpentCalories(steps int, weight, height float64, duration time.Durat
 
 func WalkingSpentCalories(steps int, weight, height float64, duration time.Duration) (float64, error) {
 	if weight <= 0 {
-		return 0, errors.New("вес должен быть больше 0")
+		return 0, errors.New("weight should be greater than 0")
 	}
 	if height <= 0 {
-		return 0, errors.New("рост должен быть больше 0")
+		return 0, errors.New("height should be greater than 0")
 	}
 	if steps <= 0 {
-		return 0, errors.New("количество шагов должно быть больше нуля")
+		return 0, errors.New("number of steps should be greater than 0")
 	}
 
 	meanSpeed := meanSpeed(steps, height, duration)

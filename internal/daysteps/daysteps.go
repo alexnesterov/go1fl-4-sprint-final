@@ -21,7 +21,7 @@ const (
 func parsePackage(data string) (int, time.Duration, error) {
 	s := strings.Split(data, ",")
 	if len(s) != 2 {
-		return 0, 0, errors.New("ошибка парсинга строки")
+		return 0, 0, errors.New("error parsing string")
 	}
 
 	steps, err := strconv.Atoi(s[0])
@@ -29,7 +29,7 @@ func parsePackage(data string) (int, time.Duration, error) {
 		return 0, 0, err
 	}
 	if steps <= 0 {
-		return 0, 0, errors.New("количество шагов должно быть больше 0")
+		return 0, 0, errors.New("number of steps should be greater than 0")
 	}
 
 	duration, err := time.ParseDuration(s[1])
@@ -37,7 +37,7 @@ func parsePackage(data string) (int, time.Duration, error) {
 		return 0, 0, err
 	}
 	if duration <= 0 {
-		return 0, 0, errors.New("продолжительность должна быть больше 0")
+		return 0, 0, errors.New("duration should be greater than 0")
 	}
 
 	return steps, duration, nil
