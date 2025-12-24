@@ -44,24 +44,26 @@ func parsePackage(data string) (int, time.Duration, error) {
 }
 
 func DayActionInfo(data string, weight, height float64) string {
-	var resultBuilder strings.Builder
-
 	steps, duration, err := parsePackage(data)
 	if err != nil {
 		log.Println(err)
 		return ""
 	}
-	fmt.Fprintf(&resultBuilder, "Количество шагов: %d.\n", steps)
 
 	distance := float64(steps) * stepLength / mInKm
-	fmt.Fprintf(&resultBuilder, "Дистанция составила %.2f км.\n", distance)
 
 	calories, err := spentcalories.WalkingSpentCalories(steps, weight, height, duration)
 	if err != nil {
 		fmt.Println(err)
 		return ""
 	}
-	fmt.Fprintf(&resultBuilder, "Вы сожгли %.2f ккал.\n", calories)
 
-	return resultBuilder.String()
+	result := fmt.Sprintf(
+		"Количество шагов: %d.\n"+
+			"Дистанция составила %.2f км.\n"+
+			"Вы сожгли %.2f ккал.\n",
+		steps, distance, calories,
+	)
+
+	return result
 }

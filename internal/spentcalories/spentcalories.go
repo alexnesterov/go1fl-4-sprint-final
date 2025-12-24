@@ -64,22 +64,14 @@ func meanSpeed(steps int, height float64, duration time.Duration) float64 {
 }
 
 func TrainingInfo(data string, weight, height float64) (string, error) {
-	var resultBuilder strings.Builder
-
 	steps, activity, durarion, err := parseTraining(data)
 	if err != nil {
 		log.Println(err)
 		return "", err
 	}
 
-	fmt.Fprintf(&resultBuilder, "Тип тренировки: %s\n", activity)
-	fmt.Fprintf(&resultBuilder, "Длительность: %.2f ч.\n", durarion.Hours())
-
 	distance := distance(steps, height)
-	fmt.Fprintf(&resultBuilder, "Дистанция: %.2f км.\n", distance)
-
 	speed := meanSpeed(steps, height, durarion)
-	fmt.Fprintf(&resultBuilder, "Скорость: %.2f км/ч\n", speed)
 
 	var calories float64
 
@@ -89,16 +81,23 @@ func TrainingInfo(data string, weight, height float64) (string, error) {
 	case "Бег":
 		calories, err = RunningSpentCalories(steps, weight, height, durarion)
 	default:
-		return "", errors.New("unknown type of training")
+		return "", errors.New("неизвестный тип тренировки")
 	}
 
 	if err != nil {
 		return "", err
 	}
 
-	fmt.Fprintf(&resultBuilder, "Сожгли калорий: %.2f\n", calories)
+	result := fmt.Sprintf(
+		"Тип тренировки: %s\n"+
+			"Длительность: %.2f ч.\n"+
+			"Дистанция: %.2f км.\n"+
+			"Скорость: %.2f км/ч\n"+
+			"Сожгли калорий: %.2f\n",
+		activity, durarion.Hours(), distance, speed, calories,
+	)
 
-	return resultBuilder.String(), nil
+	return result, nil
 }
 
 func RunningSpentCalories(steps int, weight, height float64, duration time.Duration) (float64, error) {
